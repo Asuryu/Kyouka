@@ -1,0 +1,10 @@
+name: Kyouka
+version: 6.3
+author: RedExtremePT
+main: me.redextremept.kyouka.Main
+description: Simple plugin that handles night skipping and join and leave messages.
+
+commands:
+    locations: 
+        description: Shows a list of saved locations.
+        usage: /<command>

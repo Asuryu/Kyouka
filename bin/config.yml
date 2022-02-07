@@ -1,0 +1,11 @@
+########### JOIN MESSAGES ###########
+#The message to broadcast when a player has joined the server for the first time
+firstJoin_message: '&6<player> &7has joined the server for the first time!'
+#The message to be broadcast when a player joins the server 
+join_message: '&a<player> &7has joined the server!'
+#The message to be broadcast when a player leaves the server
+leave_message: '&c<player> &7has left the server.'
+#####################################
+
+
+Locations:
