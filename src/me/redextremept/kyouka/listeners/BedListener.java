@@ -39,18 +39,17 @@ public class BedListener implements org.bukkit.event.Listener
     int countdown = 200;
     Player playerino = event.getPlayer();
     World world = playerino.getWorld();
-    
-    
+
     // if(event.getBed().toString() == "OK") {
     if(event.isCancelled()) {
     	playerino.sendMessage(Utils.chat(Red + "&cYou can't sleep right now."));
     } else {
-    	if (((event.getPlayer() instanceof Player)) && (maxOnline == 1)) {
+    	if (maxOnline == 1) {
     		counter = 0;
             trigger = true;
-            //for (Player player : Bukkit.getOnlinePlayers()) {
-            	//player.sendTitle(Utils.chat("&7The night has been skipped!"), Utils.chat("&6You are experiencing a new dawn!"));
-            //}
+            for (Player player : Bukkit.getOnlinePlayers()) {
+            	player.sendTitle(Utils.chat("&7The night has been skipped!"), Utils.chat("&6You are experiencing a new dawn!"));
+            }
             while (countdown != 0) {
             	for (Player player : Bukkit.getOnlinePlayers()) {
                     player.getWorld().playEffect(player.getLocation(), Effect.DRAGON_BREATH, 2004);
@@ -64,26 +63,24 @@ public class BedListener implements org.bukkit.event.Listener
             counter = 0;
             trigger = true;
     	}
-    	if (((event.getPlayer() instanceof Player)) && (counter < maxOnline)) {
+    	else if (counter < maxOnline) {
     		counter += 1;
-    		//for (Player player : Bukkit.getOnlinePlayers()) {
-    			//player.sendTitle(Utils.chat("&6" + (maxOnline - counter) + " &7more players needed to skip the night!"), Utils.chat("&8" + playerino.getName() + " &8has voted to skip!"));
-    		//}
+    		for (Player player : Bukkit.getOnlinePlayers()) {
+    			player.sendTitle(Utils.chat("&6" + (maxOnline - counter) + " &7more players needed to skip the night!"), Utils.chat("&8" + playerino.getName() + " &8has voted to skip!"));
+    		}
     		Bukkit.broadcastMessage(Utils.chat(Prefix + "&7" + playerino.getName() + " &3is ready to sleep " + "&8(" + (counter) + "/" + maxOnline + ")"));
             world.playSound(playerino.getLocation(), Sound.BLOCK_ENDER_CHEST_OPEN, 5, 1);
             trigger = false;
 
     	}
-    	
-        if (((event.getPlayer() instanceof Player)) && (counter >= maxOnline)) {
+        else {
         	counter += 1;
         	Bukkit.broadcastMessage(Utils.chat(Prefix + "&7" + playerino.getName() + " &3is ready to sleep " + "&8(" + (counter - 1) + "/" + maxOnline + ")"));
-            // world.playSound(playerino.getLocation(), Sound.BLOCK_GLASS_BREAK, 1.0F, 1.0F);
             counter = 0;
             trigger = true;
-            //for (Player player : Bukkit.getOnlinePlayers()) {
-            	//player.sendTitle(Utils.chat("&7The night has been skipped!"), Utils.chat("&6You are experiencing a new dawn!"));
-            //}
+            for (Player player : Bukkit.getOnlinePlayers()) {
+            	player.sendTitle(Utils.chat("&7The night has been skipped!"), Utils.chat("&6You are experiencing a new dawn!"));
+            }
             while (countdown != 0) {
             	for (Player player : Bukkit.getOnlinePlayers()) {
                     player.getWorld().playEffect(player.getLocation(), Effect.DRAGON_BREATH, 2004);
@@ -91,7 +88,7 @@ public class BedListener implements org.bukkit.event.Listener
             	countdown -= 1;
             }
             Bukkit.broadcastMessage(Utils.chat(Prefix + "&3Skipping the night everyone!"));
-            world.playSound(playerino.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 5, 1);
+            world.playSound(playerino.getLocation(), Sound.BLOCK_ENDER_CHEST_OPEN, 5, 1);
             world.setTime(1000L);
             world.setStorm(false);
             counter = 0;
@@ -103,14 +100,14 @@ public class BedListener implements org.bukkit.event.Listener
   @EventHandler
   public void onPlayerWake(PlayerBedLeaveEvent e)
   {
-	int maxOnline = (int) Math.ceil(Bukkit.getOnlinePlayers().size() / 2);
+	int maxOnline = (int) Math.ceil(Bukkit.getOnlinePlayers().size() / 2.0);
     
     if (counter != 0) {
       counter -= 1;
       Player playerino = e.getPlayer();
-      //for (Player player : Bukkit.getOnlinePlayers()) {
-    	  //player.sendTitle(Utils.chat("&6" + (maxOnline - counter) + " &7more players needed to skip the night!"), Utils.chat("&8" + playerino.getName() + " &8doesn't want to sleep!"));
-      //}
+      for (Player player : Bukkit.getOnlinePlayers()) {
+    	  player.sendTitle(Utils.chat("&6" + (maxOnline - counter) + " &7more players needed to skip the night!"), Utils.chat("&8" + playerino.getName() + " &8doesn't want to sleep!"));
+      }
       World world = playerino.getWorld();
       Bukkit.broadcastMessage(Utils.chat(Prefix + "&7" + playerino.getName() + " &3doesn't want to sleep " + "&8(" + counter + "/" + maxOnline + ")"));
       world.playSound(playerino.getLocation(), Sound.BLOCK_ENDER_CHEST_CLOSE, 5, 1);
