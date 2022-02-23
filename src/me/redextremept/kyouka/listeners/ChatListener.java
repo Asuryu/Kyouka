@@ -59,6 +59,7 @@ public class ChatListener
         int z = location.getBlockZ();
     	String locationName = event.getMessage();
     	String newLocationName = locationName.substring(locationName.indexOf(".") + 2);
+        if(newLocationName.isEmpty()) return;
     	Bukkit.broadcastMessage(Prefix + Utils.chat("&3" + newLocationName + " &8@&7 " + x + " " + y + " " + z + " &5(" + player.getWorld().getName() + ")"));
     	
     	FileWriter fileWriter = new FileWriter("./plugins/Kyouka/Locations.txt", true);
