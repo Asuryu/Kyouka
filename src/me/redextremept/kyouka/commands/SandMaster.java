@@ -34,23 +34,55 @@ public class SandMaster implements CommandExecutor
       sender.sendMessage(Prefix + ChatColor.RED + "Only players can execute this command!");
       return true;
     } 
-    else {
-      try {
-          player.sendMessage(Utils.chat(Prefix + "&3Showing you the saved locations, " + ChatColor.GOLD + player.getName() + "&8:"));
-          File myObj = new File("./plugins/Kyouka/Locations.txt");
-          Scanner myReader = new Scanner(myObj);  
-          
-          while (myReader.hasNextLine()) {
-            String data = myReader.nextLine();
-            player.sendMessage(Utils.chat(data));
-          }
-          myReader.close();
+    else{
+
+        File myObj = new File("./plugins/Kyouka/Locations.txt");
+        Scanner myReader = null;
+
+        if (args.length == 0){
+            player.sendMessage(Utils.chat(Prefix + "&3Showing you the saved locations, " + ChatColor.GOLD + player.getName() + "&8:"));
+            try {
+                myReader = new Scanner(myObj);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            int count = 0;
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                player.sendMessage(Utils.chat(count + "&l&5: &r" + data));
+                count++;
+            }
+            myReader.close();
+            return true;
         }
-      catch (FileNotFoundException e) {
-          player.sendMessage(Utils.chat(Prefix + "&cAn error has occurred"));
-          e.printStackTrace();
-        } 
+        if (args[0].equalsIgnoreCase("delete")){
+            player.sendMessage(Utils.chat(Prefix + "&aDeleting that location from the file"));
+//            try {
+//                try {
+//                    myReader = new Scanner(myObj);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//                int index = Integer.parseInt(args[1]);
+//                int count = 0;
+//                while (myReader.hasNextLine()) {
+//                    count++;
+//                }
+//                myReader.close();
+//                if(index <= count && count > 0){
+//                    player.sendMessage(Utils.chat(Prefix + "&aDeleting that location from the file"));
+//                }
+//
+//            } catch (NumberFormatException e){
+//                player.sendMessage(Utils.chat(Prefix + args[1] + " is not a valid number"));
+//                e.printStackTrace();
+//            }
+        }
+        else {
+            player.sendMessage(Utils.chat(Prefix + "&cThat command does not exist"));
+        }
     }
-        return true;
+    return true;
   }
 }
