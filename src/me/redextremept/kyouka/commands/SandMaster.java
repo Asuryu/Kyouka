@@ -2,10 +2,13 @@ package me.redextremept.kyouka.commands;
 
 import me.redextremept.kyouka.Main;
 import me.redextremept.kyouka.utils.Utils;
+import mkremins.fanciful.FancyMessage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -50,7 +53,26 @@ public class SandMaster implements CommandExecutor
             int count = 0;
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                player.sendMessage(Utils.chat(count + "&l&5: &r" + data));
+                
+                String[] after_name = data.split(":", 2);
+                String world = data.substring(data.indexOf("(")+1, data.indexOf(")"));
+                if(world.equalsIgnoreCase("world")) {
+                	 String[] coords = (after_name[1]).split("\\(", 2);
+                     String substring1 = coords[0].substring(0, coords[0].length() - 3);
+                     String substring2 = substring1.substring(1, substring1.length());
+                     String[] separated_coords = substring2.split(" ");
+                     int x = Math.round(Integer.parseInt(separated_coords[0]) / 8);
+                     int y = Integer.parseInt(separated_coords[1]);
+                     int z = Math.round(Integer.parseInt(separated_coords[2]) / 8);
+                     new FancyMessage(Utils.chat(count + "&l&5: &r" + data))
+                     .tooltip("Nether: " + x + " " + y + " " + z)
+                     .color(ChatColor.RED)
+                     .send(sender);
+                } else {
+                	new FancyMessage(Utils.chat(count + "&l&5: &r" + data))
+                    .send(sender);
+                }
+               
                 count++;
             }
             myReader.close();
